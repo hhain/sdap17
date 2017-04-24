@@ -1,5 +1,5 @@
-#SDAP 2017
+# SDAP 2017
 
-##Contributors
+## Contributors
 - Pawel Bielski
 - Henrik Hain
