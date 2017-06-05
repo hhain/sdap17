@@ -39,11 +39,11 @@ def generate_class_label_and_drop(data):
     r_data = r_data.drop('State', 1)
     r_data = r_data.drop('ID', 1)
     r_data = r_data.drop('Rng_ID', 1)
-    
+
     r_data = r_data[ ~r_data['target'].str.contains("Pause") ]
     r_data = r_data[ ~r_data['target'].str.contains("Enter") ]
     r_data = r_data[ ~r_data['target'].str.contains("Leave") ]
-    
+
     return r_data.reset_index()
 
 
