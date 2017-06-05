@@ -115,9 +115,10 @@ def hold_out_val(data, target, include_self=True, class_weight=None, features=No
                 print("Confusion Matrix")
                 print(confusion_matrix(y_true = e[class_var], y_pred = y_pred))
             
-    f1_avg = np.mean(np.array(f1))
+    f1_avg = np.mean(np.array(f1_lst))
+    f1_std = np.std(np.array(f1_lst))
     if verbose:
-        print("f1 average:",f1_avg)
+        print("f1 average +/- f1 std:",f1_avg, "+/-", f1_std)
     
-    return f1_avg
+    return f1_avg, f1_std
     
