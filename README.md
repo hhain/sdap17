@@ -6,7 +6,7 @@ Contributors:
 - P. Bielski
 - R. Schmucker
 
-smart data excercises
+smart data excercises 2017
 
 Project Organization
 ------------
