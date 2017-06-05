@@ -4,16 +4,18 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+from sklearn.tree import DecisionTreeClassifier
 def dt_eval(data, target, depth=4, class_weight="balanced"):
     """
     evals a single data set against itself
     target is the class variable, all other variables are used for training
-    
+
     """
     class_var = target
     features = data.columns.values[~data.columns.str.contains(class_var)]
-    
-    clf = DecisionTreeClassifier(random_state=5, max_depth=depth, splitter="best", criterion="gini", class_weight=class_weight)
+
+    clf = DecisionTreeClassifier(random_state=5, max_depth=depth, splitter="best",
+                                 criterion="gini", class_weight=class_weight)
     clf.fit(data[features], data[class_var])
     #y_pred = clf.predict(data[features])
     #clf_rep = classification_report(data[class_var], y_pred)
@@ -25,11 +27,11 @@ def bay_eval(data, target):
     """
     evals a single data set against itself
     target is the class variable, all other variables are used for training
-    
+
     """
     class_var = target
     features = data.columns.values[~data.columns.str.contains(class_var)]
-    
+
     clf = GaussianNB()
     clf.fit(data[features], data[class_var])
     #y_pred = clf.predict(data[features])
@@ -72,29 +74,30 @@ def knn_eval(data, target, k):
 
 
 # hold out cross validation
-def hold_out_val(data, target, include_self=True, class_weight=None, features=None, cl='rf', verbose=False, random_state=None):
+def hold_out_val(data, target, include_self=True, class_weight=None,
+                 features=None, cl='rf', verbose=False, random_state=None):
     """ 
     performs simple hold-out validation
     :param data: list of datasets to evaluate
     :param verbose: if true print confusion matrix and classification report for each evaluation
     """
-    
+
     f1_lst = []
-    
+
     for d_idx, d in enumerate(data):
         d.dropna(inplace=True)
         class_var = target
         if features is None:
             features = d.columns.values[~d.columns.str.contains(class_var)]
-        
-        if cl=='rf':
-            clf=rf_eval(d, 'target', estimators=100, random_state = random_state)
-        elif cl =='dt':
-            clf=dt_eval(d, 'target', depth=4)#, class_weight=class_weight)
-        elif cl=='nb':
-            clf=bay_eval(d,'target')
+
+        if cl == 'rf':
+            clf = rf_eval(d, 'target', estimators=100, random_state=random_state)
+        elif cl == 'dt':
+            clf = dt_eval(d, 'target', depth=4)#, class_weight=class_weight)
+        elif cl == 'nb':
+            clf = bay_eval(d, 'target')
         else:
-            clf=knn_eval(d, 'target', k=41)
+            clf = knn_eval(d, 'target', k=41)
             
         for e_idx, e in enumerate(data):
             if e_idx == d_idx and not include_self:
