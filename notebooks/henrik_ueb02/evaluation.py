@@ -44,11 +44,11 @@ def rf_eval(data, target, estimators=10, random_state=None):
     """
     evals a single data set against itself
     target is the class variable, all other variables are used for training
-    
+
     """
     class_var = target
     features = data.columns.values[~data.columns.str.contains(class_var)]
-    
+
     clf = RandomForestClassifier(n_estimators=estimators, class_weight="balanced", random_state=random_state)
     clf.fit(data[features], data[class_var])
     #y_pred = clf.predict(data[features])
@@ -58,12 +58,12 @@ def rf_eval(data, target, estimators=10, random_state=None):
 
 from sklearn import neighbors
 def knn_eval(data, target, k):
-    
+
     class_var = target
     features = data.columns.values[~data.columns.str.contains(class_var)]
     clf = neighbors.KNeighborsClassifier(k) #, weights=weights)
     clf.fit(data[features], data[class_var])
-    
+
     return clf
 #dt_eval(ds1_rv, target="target")
 #ds1_rv.dropna(inplace=True)
@@ -71,12 +71,22 @@ def knn_eval(data, target, k):
 #clf2=dt_eval(ds2_mf_rv, 'target', depth=4, class_weight=None)
 #clf3=dt_eval(ds3_mf_rv, 'target', depth=4, class_weight=None)
 
+from sklearn.neural_network import MLPClassifier
+def nn_eval(data, target):
+    class_var = target
+    features = data.columns.values[~data.columns.str.contains(class_var)]
+
+    mlp = MLPClassifier(hidden_layer_sizes=(30, 30, 30), max_iter=1000)
+    print(mlp)
+    mlp.fit(data[features], data[class_var])
+
+    return mlp
 
 
 # hold out cross validation
 def hold_out_val(data, target, include_self=True, class_weight=None,
                  features=None, cl='rf', verbose=False, random_state=None):
-    """ 
+    """
     performs simple hold-out validation
     :param data: list of datasets to evaluate
     :param verbose: if true print confusion matrix and classification report for each evaluation
@@ -96,9 +106,11 @@ def hold_out_val(data, target, include_self=True, class_weight=None,
             clf = dt_eval(d, 'target', depth=4)#, class_weight=class_weight)
         elif cl == 'nb':
             clf = bay_eval(d, 'target')
+        elif cl == 'nn':
+            clf = nn_eval(d, 'target')
         else:
             clf = knn_eval(d, 'target', k=41)
-            
+
         for e_idx, e in enumerate(data):
             if e_idx == d_idx and not include_self:
                 continue
@@ -107,21 +119,21 @@ def hold_out_val(data, target, include_self=True, class_weight=None,
                 print("Self Evaluation", e_idx, "vs", d_idx)
             elif verbose:
                 print("CV Evaluation", e_idx, "vs", d_idx)
-                
+
             y_pred = clf.predict(e[features])
-            f1 = np.mean(f1_score(y_true = e[class_var], y_pred=y_pred, average=None))
+            f1 = np.mean(f1_score(y_true=e[class_var], y_pred=y_pred, average=None))
             f1_lst.append(f1)
-            
+
             if verbose:
-                clf_rep = classification_report(y_true = e[class_var], y_pred = y_pred)
+                clf_rep = classification_report(y_true=e[class_var], y_pred=y_pred)
                 print(clf_rep)
                 print("Confusion Matrix")
-                print(confusion_matrix(y_true = e[class_var], y_pred = y_pred))
-            
+                print(confusion_matrix(y_true=e[class_var], y_pred=y_pred))
+
     f1_avg = np.mean(np.array(f1_lst))
     f1_std = np.std(np.array(f1_lst))
     if verbose:
-        print("f1 average +/- f1 std:",f1_avg, "+/-", f1_std)
-    
+        print("f1 average +/- f1 std:", f1_avg, "+/-", f1_std)
+
     return f1_avg, f1_std
     
