@@ -3,10 +3,13 @@ from flask import Flask, jsonify, abort, make_response, request
 from flask_restful import Api, Resource, reqparse, fields, marshal, marshal_with
 from flask_cors import CORS, cross_origin
 from flask import url_for
+from sklearn.externals import joblib
 
 APP = Flask(__name__, static_url_path="")
 CORS(APP)
 API = Api(APP)
+MODEL = None
+
 
 Prediction = {
     'row': fields.String,
@@ -28,5 +31,6 @@ class Prediction(Resource):
 API.add_resource(Prediction, '/predict')
 
 if __name__ == '__main__':
+    MODEL = joblib.load('../../models/solution_ueb02/model.pkl')
     APP.run(host='0.0.0.0', port=5444 ,debug=True)
 
