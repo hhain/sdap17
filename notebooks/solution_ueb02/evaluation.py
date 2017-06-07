@@ -77,7 +77,7 @@ def nn_eval(data, target):
     features = data.columns.values[~data.columns.str.contains(class_var)]
 
     mlp = MLPClassifier(hidden_layer_sizes=(30, 30, 30), max_iter=1000)
-    print(mlp)
+    # print(mlp)
     mlp.fit(data[features], data[class_var])
 
     return mlp
