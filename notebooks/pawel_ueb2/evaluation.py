@@ -93,6 +93,16 @@ def qd_eval(data, target):
     clf.fit(data[features], data[class_var])
     
     return clf
+
+from sklearn import svm
+def svc_eval(data, target):
+    
+    class_var = target
+    features = data.columns.values[~data.columns.str.contains(class_var)]
+    clf = svm.LinearSVC()
+    clf.fit(data[features], data[class_var])
+    
+    return clf
     
 #dt_eval(ds1_rv, target="target")
 #ds1_rv.dropna(inplace=True)
@@ -129,7 +139,9 @@ def hold_out_val(data, target, include_self=True, class_weight=None, features=No
         elif cl=='ld':
             clf=ld_eval(d,'target')
         elif cl=='qd':
-            clf=qd_eval(d,'target')             
+            clf=qd_eval(d,'target') 
+        elif cl=='svc':
+            clf=svc_eval(d, 'target')
         else:
             clf=knn_eval(d, 'target', k=41)
             
