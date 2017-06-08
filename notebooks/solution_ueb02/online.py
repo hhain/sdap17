@@ -21,7 +21,6 @@ class Prediction(Resource):
     def post(self):
         json_data = request.get_json(force=True)
         sample = np.array(json_data['data'])
-        print(sample)
         return jsonify({'result': MODEL.predict(sample).tolist()})
 
 
