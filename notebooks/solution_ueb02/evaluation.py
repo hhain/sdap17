@@ -3,6 +3,7 @@ from sklearn.metrics import confusion_matrix, classification_report, precision_r
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.externals import joblib
 
 from sklearn.tree import DecisionTreeClassifier
 def dt_eval(data, target, depth=4, class_weight="balanced"):
@@ -20,6 +21,7 @@ def dt_eval(data, target, depth=4, class_weight="balanced"):
     #y_pred = clf.predict(data[features])
     #clf_rep = classification_report(data[class_var], y_pred)
     #print(clf_rep)
+    joblib.dump(clf, '../../models/solution_ueb02/dt_model.plk')
     return clf
 
 from sklearn.naive_bayes import GaussianNB
@@ -37,6 +39,7 @@ def bay_eval(data, target):
     #y_pred = clf.predict(data[features])
     #clf_rep = classification_report(data[class_var], y_pred)
     #print(clf_rep)
+    joblib.dump(clf, '../../models/solution_ueb02/nb_model.plk')
     return clf
 
 from sklearn.ensemble import RandomForestClassifier
@@ -54,6 +57,7 @@ def rf_eval(data, target, estimators=10, random_state=None):
     #y_pred = clf.predict(data[features])
     #clf_rep = classification_report(data[class_var], y_pred)
     #print(clf_rep)
+    joblib.dump(clf, '../../models/solution_ueb02/rf_model.plk')
     return clf
 
 from sklearn import neighbors
@@ -64,6 +68,7 @@ def knn_eval(data, target, k):
     clf = neighbors.KNeighborsClassifier(k) #, weights=weights)
     clf.fit(data[features], data[class_var])
 
+    joblib.dump(clf, '../../models/solution_ueb02/knn_model.plk')
     return clf
 #dt_eval(ds1_rv, target="target")
 #ds1_rv.dropna(inplace=True)
@@ -80,6 +85,7 @@ def nn_eval(data, target):
     # print(mlp)
     mlp.fit(data[features], data[class_var])
 
+    joblib.dump(mlp, '../../models/solution_ueb02/nn_model.plk')
     return mlp
 
 
