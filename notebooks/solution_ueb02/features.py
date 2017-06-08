@@ -501,7 +501,8 @@ def reduce_dim_PCA(data, n_comps=10, label=None):
         X = data
     
     pca = PCA(n_components=n_comps)
-    X_reduced = pd.DataFrame(pca.fit(X).transform(X))
+    X_reduced = pd.DataFrame(pca.fit_transform(X))
+    #X_reduced = pd.DataFrame(pca.fit(X).transform(X))
     X_reduced.columns = ["pca_"+str(i) for i in range(len(X_reduced.columns))]
     
     if label is not None:
