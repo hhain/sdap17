@@ -5,7 +5,7 @@ Contributors:
 - H. Hain
 - R. Schmucker
 
-smart data excercises 2017
+smart data excercises 2017 (c)
 
 Project Organization
 ------------
