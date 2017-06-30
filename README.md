@@ -1,9 +1,8 @@
-SDAP17BielskiHainSchmucker
+SDAP17HainSchmucker
 ==============================
 
 Contributors:
 - H. Hain
-- P. Bielski
 - R. Schmucker
 
 smart data excercises 2017
